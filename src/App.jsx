@@ -11,7 +11,30 @@ import Dashboard from "./components/Dashboard";
 import Usuarios from "./components/Usuarios";
 import CameraScanner from "./components/CameraScanner";
 
-const CODIGO_REGEX = /AN\d{9}BR/g;
+const CODIGO_REGEX = /\bA\s*N\s*\d(\s*\d){8}\s*B\s*R\b/gi;
+
+const normalizeCodigo = (codigo = "") =>
+  codigo.toUpperCase().replace(/[^A-Z0-9]/g, "");
+
+const isValidCodigo = (codigo = "") =>
+  /^AN\d{9}BR$/.test(normalizeCodigo(codigo));
+
+const getCódigoFromTexto = (texto = "") => {
+  const original = texto.toUpperCase();
+  const cleaned = original.replace(/[^A-Z0-9]/g, "");
+
+  const encontrados = new Set();
+
+  for (const match of original.matchAll(CODIGO_REGEX)) {
+    encontrados.add(normalizeCodigo(match[0]));
+  }
+
+  for (const match of cleaned.matchAll(/AN\d{9}BR/g)) {
+    encontrados.add(match[0]);
+  }
+
+  return [...encontrados];
+};
 
 const usuariosTeste = [
   {
@@ -185,8 +208,9 @@ export default function App() {
   }
 
   function extrairCodigos(texto) {
-    const encontrados = texto.toUpperCase().match(CODIGO_REGEX) || [];
-    const unicos = [...new Set(encontrados)];
+    const encontrados = getCódigoFromTexto(texto);
+    const validos = encontrados.filter((codigo) => isValidCodigo(codigo));
+    const unicos = [...new Set(validos)];
 
     setRomaneio(unicos);
     setBipagens([]);
@@ -194,7 +218,7 @@ export default function App() {
     if (unicos.length > 0) {
       setEtapa("confirmacao");
     } else {
-      alert("Nenhum código válido encontrado.");
+      alert("Nenhum código válido encontrado. Verifique se o romaneio contém AN + 9 dígitos + BR.");
     }
   }
 
