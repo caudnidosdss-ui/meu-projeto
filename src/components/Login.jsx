@@ -56,15 +56,10 @@ export default function Login({
 
         <div className="login-help">
           <p>
-            <strong>Líder:</strong>
-            {" "}
-            lider@xcomm.com / 123456
+            Use um usuário já cadastrado no Supabase Auth.
           </p>
-
           <p>
-            <strong>Operador:</strong>
-            {" "}
-            operador@xcomm.com / 123456
+            Se precisar, crie novas credenciais diretamente no painel do Supabase.
           </p>
         </div>
       </div>
