@@ -96,7 +96,7 @@ export default function Usuarios({ usuarios, criarUsuario, excluirUsuario, alter
                 <select
                   className="cargo-select"
                   value={usuario.cargo}
-                  onChange={(e) => alterarCargoLocal(usuario.id, e.target.value)}
+                  onChange={(e) => alterarCargoLocal(usuario, e.target.value)}
                 >
                   <option value="operador">📦 Operador</option>
                   <option value="lider">📊 Líder</option>
@@ -105,7 +105,7 @@ export default function Usuarios({ usuarios, criarUsuario, excluirUsuario, alter
 
                 <button
                   className="delete-user-btn"
-                  onClick={() => excluirUsuarioLocal(usuario.id)}
+                  onClick={() => excluirUsuarioLocal(usuario)}
                 >
                   Excluir
                 </button>
