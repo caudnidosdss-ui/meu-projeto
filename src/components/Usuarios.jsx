@@ -1,13 +1,13 @@
 import "../styles/Usuarios.css";
 import { useState } from "react";
 
-export default function Usuarios({ usuarios, setUsuarios }) {
+export default function Usuarios({ usuarios, criarUsuario, excluirUsuario, alterarCargo }) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [cargo, setCargo] = useState("operador");
 
-  function criarUsuario(e) {
+  async function criarUsuarioLocal(e) {
     e.preventDefault();
 
     if (!nome || !email || !senha) {
@@ -15,15 +15,7 @@ export default function Usuarios({ usuarios, setUsuarios }) {
       return;
     }
 
-    const novoUsuario = {
-      id: Date.now(),
-      nome,
-      email,
-      senha,
-      cargo,
-    };
-
-    setUsuarios((prev) => [...prev, novoUsuario]);
+    await criarUsuario({ nome, email, senha, cargo });
 
     setNome("");
     setEmail("");
@@ -31,25 +23,12 @@ export default function Usuarios({ usuarios, setUsuarios }) {
     setCargo("operador");
   }
 
-  function excluirUsuario(id) {
-    const confirmar = confirm("Deseja realmente excluir este usuário?");
-
-    if (!confirmar) return;
-
-    setUsuarios((prev) => prev.filter((usuario) => usuario.id !== id));
+  function excluirUsuarioLocal(id) {
+    excluirUsuario(id);
   }
 
-  function alterarCargo(id, novoCargo) {
-    setUsuarios((prev) =>
-      prev.map((usuario) =>
-        usuario.id === id
-          ? {
-              ...usuario,
-              cargo: novoCargo,
-            }
-          : usuario
-      )
-    );
+  function alterarCargoLocal(id, novoCargo) {
+    alterarCargo(id, novoCargo);
   }
 
   return (
@@ -62,7 +41,7 @@ export default function Usuarios({ usuarios, setUsuarios }) {
           </div>
         </div>
 
-        <form className="usuarios-form" onSubmit={criarUsuario}>
+        <form className="usuarios-form" onSubmit={criarUsuarioLocal}>
           <input
             type="text"
             placeholder="Nome"
@@ -117,7 +96,7 @@ export default function Usuarios({ usuarios, setUsuarios }) {
                 <select
                   className="cargo-select"
                   value={usuario.cargo}
-                  onChange={(e) => alterarCargo(usuario.id, e.target.value)}
+                  onChange={(e) => alterarCargoLocal(usuario.id, e.target.value)}
                 >
                   <option value="operador">📦 Operador</option>
                   <option value="lider">📊 Líder</option>
@@ -126,7 +105,7 @@ export default function Usuarios({ usuarios, setUsuarios }) {
 
                 <button
                   className="delete-user-btn"
-                  onClick={() => excluirUsuario(usuario.id)}
+                  onClick={() => excluirUsuarioLocal(usuario.id)}
                 >
                   Excluir
                 </button>
