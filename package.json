@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "create-user": "node scripts/createSupabaseUser.mjs"
+    "create-user": "node scripts/createSupabaseUser.mjs",
+    "test-delete-user": "node scripts/testDeleteEndpoint.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.33.1",

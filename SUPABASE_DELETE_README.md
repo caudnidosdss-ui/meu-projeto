@@ -24,7 +24,15 @@ curl -X POST https://SEU_DOMINIO/api/deleteUser \
   -d '{"id":"usuario-id-ou", "email":"opcional@exemplo.com"}'
 ```
 
-4) Recomendações de segurança:
+4) Teste local com script:
+- Defina as variáveis no arquivo `.env`.
+- Execute:
+
+```bash
+npm run test-delete-user <id> [email]
+```
+
+5) Recomendações de segurança:
 - Nunca exponha `SUPABASE_SERVICE_ROLE_KEY` no cliente.
 - Use `DELETE_API_KEY` longa e rotacione-a conforme necessário.
 - Restrinja o endpoint via autenticação adicional (IP allowlist, JWT checks).
