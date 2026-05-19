@@ -1,7 +1,9 @@
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
-module.exports = async (req, res) => {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
   const apiKey = req.headers['x-api-key'];
   if (!process.env.DELETE_API_KEY) {
@@ -14,7 +16,9 @@ module.exports = async (req, res) => {
   }
 
   const { id, email } = req.body || {};
-  if (!id && !email) return res.status(400).json({ error: 'id or email required' });
+  if (!id && !email) {
+    return res.status(400).json({ error: 'id or email required' });
+  }
 
   const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
@@ -42,4 +46,4 @@ module.exports = async (req, res) => {
     console.error('Exception ao excluir usuário:', err);
     return res.status(500).json({ error: err.message || err });
   }
-};
+}

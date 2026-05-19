@@ -11,6 +11,8 @@ Instruções para habilitar deleção segura de usuários
   - `VITE_SUPABASE_URL` (já usado no cliente)
   - `SUPABASE_SERVICE_ROLE_KEY` (service role key **privada**, NÃO comitar)
   - `DELETE_API_KEY` (chave simples para proteger o endpoint)
+  - `VITE_DELETE_API_KEY` (mesma chave que `DELETE_API_KEY`, exposta apenas para o cliente)
+  - `VITE_USE_DELETE_ENDPOINT=true` para ativar o uso do endpoint no app
 - Deploy: ao fazer deploy no Vercel, defina essas variáveis no painel de Environment Variables.
 
 3) Como chamar o endpoint (exemplo curl):
