@@ -13,11 +13,11 @@ import "../styles/Dashboard.css";
 import StatCard from "./ui/StatCard";
 import AnimatedCounter from "./ui/AnimatedCounter";
 import {
-  SimpleLineChart,
-  SimpleBarChart,
-  SimplePieChart,
-  SimpleHBarChart,
-} from "./charts/SimpleCharts";
+  RealisticLineChart,
+  RealisticBarChart,
+  RealisticPieChart,
+  RealisticHBarChart,
+} from "./charts/RealisticCharts";
 
 function parseDataBR(dataStr) {
   if (!dataStr) return null;
@@ -165,25 +165,25 @@ export default function Dashboard({ historico = [], usuarios = [] }) {
       </section>
 
       <div className="charts-grid">
-        <div className="chart-card glass-panel">
+        <motion.div className="chart-card glass-panel" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <h3>Evolução por conferência</h3>
-          <SimpleLineChart data={linhaHistorico} />
-        </div>
+          <RealisticLineChart data={linhaHistorico} height={300} />
+        </motion.div>
 
-        <div className="chart-card glass-panel">
+        <motion.div className="chart-card glass-panel" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
           <h3>Estatísticas por dia</h3>
-          <SimpleBarChart data={porDia} labelKey="dia" />
-        </div>
+          <RealisticBarChart data={porDia} labelKey="dia" height={300} />
+        </motion.div>
 
-        <div className="chart-card glass-panel">
+        <motion.div className="chart-card glass-panel" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
           <h3>Distribuição geral</h3>
-          <SimplePieChart data={pizzaData} />
-        </div>
+          <RealisticPieChart data={pizzaData} height={300} />
+        </motion.div>
 
-        <div className="chart-card glass-panel">
+        <motion.div className="chart-card glass-panel" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
           <h3>Por operador</h3>
-          <SimpleHBarChart data={porOperador} labelKey="operador" />
-        </div>
+          <RealisticHBarChart data={porOperador} labelKey="operador" height={350} />
+        </motion.div>
       </div>
 
       <section className="glass-panel">

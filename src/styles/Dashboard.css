@@ -47,19 +47,28 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  margin-bottom: 20px;
 }
 
 .chart-card {
   position: relative;
-  min-height: 300px;
+  min-height: 320px;
   overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+.chart-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.15), var(--shadow-lg);
 }
 
 .chart-card h3 {
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin-bottom: 16px;
-  color: var(--text-secondary);
-  font-weight: 600;
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 /* Gráficos SVG nativos (sem Recharts) */
@@ -233,31 +242,42 @@
 .history-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   margin-top: 16px;
 }
 
 .history-card {
-  background: rgba(255, 255, 255, 0.04);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(168, 85, 247, 0.03) 100%);
   border-radius: 16px;
   padding: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   flex-wrap: wrap;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.history-card:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(168, 85, 247, 0.08) 100%);
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
+  transform: translateX(4px);
 }
 
 .history-user {
   display: flex;
   align-items: center;
   gap: 14px;
+  flex: 1;
+  min-width: 200px;
 }
 
 .history-avatar {
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   border-radius: 14px;
   background: var(--gradient-primary);
   display: flex;
@@ -265,6 +285,18 @@
   justify-content: center;
   font-weight: 900;
   font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  flex-shrink: 0;
+}
+
+.history-user strong {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.history-user p {
+  font-size: 0.85rem;
+  margin-top: 4px;
 }
 
 .history-metrics {
@@ -274,34 +306,44 @@
 }
 
 .history-metrics span {
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
   font-size: 12px;
   font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.history-metrics span:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.05);
 }
 
 .history-metrics .ok {
-  background: rgba(34, 197, 94, 0.12);
+  background: rgba(34, 197, 94, 0.15);
   color: var(--success-neon);
+  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
 .history-metrics .error {
-  background: rgba(239, 68, 68, 0.12);
+  background: rgba(239, 68, 68, 0.15);
   color: var(--error-neon);
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .history-metrics .blue {
-  background: rgba(56, 189, 248, 0.12);
+  background: rgba(56, 189, 248, 0.15);
   color: var(--accent-cyan);
+  border: 1px solid rgba(56, 189, 248, 0.2);
 }
 
 .empty-dashboard {
-  padding: 40px;
+  padding: 60px 40px;
   text-align: center;
   color: var(--text-secondary);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 900px) {

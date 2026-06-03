@@ -8,6 +8,8 @@ export default function Login({
   setEmail,
   setSenha,
   fazerLogin,
+  error,
+  loading,
 }) {
   return (
     <div className="login-page">
@@ -63,12 +65,13 @@ export default function Login({
             className="btn-primary login-submit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            disabled={loading}
           >
             <LogIn size={20} />
-            Entrar
+            {loading ? "Carregando..." : "Entrar"}
           </motion.button>
         </form>
-
+        {error && <div className="login-error">{error}</div>}
         
       </motion.div>
     </div>

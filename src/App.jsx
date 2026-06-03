@@ -1,9 +1,10 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState, useRef } from "react";
 import "./styles/global.css";
 import Login from "./components/Login";
 import Sidebar from "./components/Sidebar";
 import MobileDrawer from "./components/MobileDrawer";
 import { MobileTopBar } from "./components/MobileNav";
+import ToastContainer, { useToast } from "./components/ui/ToastContainer";
 import { useAppStorage } from "./hooks/useAppStorage";
 import { useConferencia } from "./hooks/useConferencia";
 
@@ -14,7 +15,14 @@ const RomaneioPage = lazy(() => import("./components/Romaneio/RomaneioPage"));
 function LoadingScreen() {
   return (
     <div className="loading-screen">
-      <div className="loading-spinner" />
+      <div className="skeleton">
+        <div className="skeleton-row" />
+        <div className="skeleton-grid">
+          <div className="skeleton-card" />
+          <div className="skeleton-card" />
+          <div className="skeleton-card" />
+        </div>
+      </div>
       <p>Carregando módulo…</p>
     </div>
   );
@@ -27,10 +35,14 @@ export default function App() {
   const [usuarioLogado, setUsuarioLogado] = useState(null);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
   const [telaAtual, setTelaAtual] = useState("romaneio");
   const [sidebarAberta, setSidebarAberta] = useState(false);
 
   const conferencia = useConferencia(usuarioLogado, setHistorico);
+  const { toasts, addToast, removeToast } = useToast();
+  const mainRef = useRef(null);
 
   useEffect(() => {
     if (
@@ -43,7 +55,7 @@ export default function App() {
   }, [telaAtual, usuarioLogado]);
 
   useEffect(() => {
-    document.querySelector(".main")?.scrollTo({ top: 0, behavior: "auto" });
+    mainRef.current?.scrollTo({ top: 0, behavior: "auto" });
     setSidebarAberta(false);
   }, [telaAtual]);
 
@@ -63,16 +75,21 @@ export default function App() {
 
   function fazerLogin(e) {
     e.preventDefault();
-    const usuario = usuarios.find(
-      (u) => u.email === email && u.senha === senha
-    );
+    setLoginLoading(true);
+    setLoginError("");
+    // Simulate quick validation (replace with real auth call)
+    const usuario = usuarios.find((u) => u.email === email && u.senha === senha);
     if (!usuario) {
-      alert("Email ou senha incorretos.");
+      setLoginError("Email ou senha incorretos.");
+      addToast("Email ou senha incorretos.", "error");
+      setLoginLoading(false);
       return;
     }
     setUsuarioLogado(usuario);
+    addToast("Login efetuado com sucesso.", "success");
     setTelaAtual("romaneio");
     setSidebarAberta(false);
+    setLoginLoading(false);
   }
 
   function sair() {
@@ -91,6 +108,8 @@ export default function App() {
       setEmail={setEmail}
       setSenha={setSenha}
       fazerLogin={fazerLogin}
+      error={loginError}
+      loading={loginLoading}
     />
   );
 }
@@ -129,26 +148,29 @@ export default function App() {
           telaAtual={telaAtual}
         />
 
-        <main className="main">
+        <main className="main" ref={mainRef}>
           <Suspense fallback={<LoadingScreen />}>
-            {telaAtual === "dashboard" && podeDashboard && (
-              <Dashboard historico={historico} usuarios={usuarios} />
-            )}
+            <div key={telaAtual} className="page">
+              {telaAtual === "dashboard" && podeDashboard && (
+                <Dashboard historico={historico} usuarios={usuarios} />
+              )}
 
-            {telaAtual === "configuracoes" && podeConfiguracoes && (
-              <Configuracoes
-                usuarios={usuarios}
-                setUsuarios={setUsuarios}
-                tema={tema}
-                setTema={setTema}
-              />
-            )}
+              {telaAtual === "configuracoes" && podeConfiguracoes && (
+                <Configuracoes
+                  usuarios={usuarios}
+                  setUsuarios={setUsuarios}
+                  tema={tema}
+                  setTema={setTema}
+                />
+              )}
 
-            {telaAtual === "romaneio" && (
-              <RomaneioPage conferencia={conferencia} />
-            )}
+              {telaAtual === "romaneio" && (
+                <RomaneioPage conferencia={conferencia} />
+              )}
+            </div>
           </Suspense>
         </main>
+        <ToastContainer toasts={toasts} onRemove={removeToast} />
       </div>
     </div>
   );
