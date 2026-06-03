@@ -6,6 +6,7 @@ import {
   LogOut,
   Shield,
   X,
+  FileText,
 } from "lucide-react";
 import "../styles/Sidebar.css";
 
@@ -28,6 +29,10 @@ export default function Sidebar({
     usuarioLogado?.cargo === "admin";
 
   const podeConfiguracoes = usuarioLogado?.cargo === "lider";
+  
+  const podeConsultaNF =
+    usuarioLogado?.cargo === "lider" ||
+    usuarioLogado?.cargo === "admin";
 
   const iniciais =
     usuarioLogado?.nome?.charAt(0)?.toUpperCase() || "U";
@@ -46,6 +51,16 @@ export default function Sidebar({
             label: "Dashboard",
             desc: "Gestão e estatísticas",
             icon: LayoutDashboard,
+          },
+        ]
+      : []),
+    ...(podeConsultaNF
+      ? [
+          {
+            id: "consulta-nf",
+            label: "Consulta NF",
+            desc: "Pesquisa de notas fiscais",
+            icon: FileText,
           },
         ]
       : []),

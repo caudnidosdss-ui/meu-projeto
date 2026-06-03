@@ -11,6 +11,7 @@ import { useConferencia } from "./hooks/useConferencia";
 const Dashboard = lazy(() => import("./components/Dashboard"));
 const Configuracoes = lazy(() => import("./components/Configuracoes"));
 const RomaneioPage = lazy(() => import("./components/Romaneio/RomaneioPage"));
+const ConsultaNF = lazy(() => import("./components/ConsultaNF"));
 
 function LoadingScreen() {
   return (
@@ -118,6 +119,9 @@ export default function App() {
     usuarioLogado.cargo === "lider" || usuarioLogado.cargo === "admin";
 
   const podeConfiguracoes = usuarioLogado.cargo === "lider";
+  
+  const podeConsultaNF = 
+    usuarioLogado.cargo === "lider" || usuarioLogado.cargo === "admin";
 
   return (
     <div className="app">
@@ -166,6 +170,10 @@ export default function App() {
 
               {telaAtual === "romaneio" && (
                 <RomaneioPage conferencia={conferencia} />
+              )}
+
+              {telaAtual === "consulta-nf" && podeConsultaNF && (
+                <ConsultaNF />
               )}
             </div>
           </Suspense>
