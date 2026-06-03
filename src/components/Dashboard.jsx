@@ -17,7 +17,7 @@ import {
   RealisticBarChart,
   RealisticPieChart,
   RealisticHBarChart,
-} from "./charts/RealisticCharts";
+} from "./charts/ChartComponents";
 
 function parseDataBR(dataStr) {
   if (!dataStr) return null;
