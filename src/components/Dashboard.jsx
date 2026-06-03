@@ -18,6 +18,11 @@ import {
   RealisticPieChart,
   RealisticHBarChart,
 } from "./charts/ChartComponents";
+import {
+  RadarChart,
+  RadialChart,
+  MetricsRadarChart,
+} from "./charts/AdvancedCharts";
 
 function parseDataBR(dataStr) {
   if (!dataStr) return null;
@@ -108,6 +113,37 @@ export default function Dashboard({ historico = [], usuarios = [] }) {
       }));
   }, [historico]);
 
+  const radarData = useMemo(() => {
+    const map = {};
+    historico.slice(0, 6).forEach((item) => {
+      const d = parseDataBR(item.data);
+      const chave = d
+        ? d.toLocaleDateString("pt-BR", { month: "long" })
+        : String(item.data).split(",")[0] || "—";
+      if (!map[chave]) {
+        map[chave] = { nome: chave, desktop: 0, mobile: 0 };
+      }
+      map[chave].desktop += item.corretos || 0;
+      map[chave].mobile += item.divergentes || 0;
+    });
+    return Object.values(map).length > 0
+      ? Object.values(map)
+      : [
+          { nome: "Jan", desktop: 90, mobile: 70 },
+          { nome: "Fev", desktop: 85, mobile: 80 },
+          { nome: "Mar", desktop: 92, mobile: 88 },
+        ];
+  }, [historico]);
+
+  const metricsComparacao = useMemo(() => {
+    return porOperador.slice(0, 4).map((op) => ({
+      nome: op.operador,
+      Acertos: op.acertos,
+      Erros: op.erros,
+      Conferencias: op.conferencias,
+    }));
+  }, [porOperador]);
+
   return (
     <div className="dashboard-page">
       <motion.header
@@ -183,6 +219,18 @@ export default function Dashboard({ historico = [], usuarios = [] }) {
         <motion.div className="chart-card glass-panel" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
           <h3>Por operador</h3>
           <RealisticHBarChart data={porOperador} labelKey="operador" height={350} />
+        </motion.div>
+      </div>
+
+      <div className="charts-grid-advanced">
+        <motion.div className="chart-card glass-panel" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+          <h3>Análise Comparativa (Radar)</h3>
+          <RadarChart data={radarData} height={300} />
+        </motion.div>
+
+        <motion.div className="chart-card glass-panel" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
+          <h3>Performance por Operador</h3>
+          <MetricsRadarChart data={metricsComparacao} height={300} />
         </motion.div>
       </div>
 
