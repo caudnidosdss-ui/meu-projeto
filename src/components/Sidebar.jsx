@@ -7,6 +7,7 @@ import {
   Shield,
   X,
   FileText,
+  ClipboardCheck,
 } from "lucide-react";
 import "../styles/Sidebar.css";
 
@@ -30,9 +31,7 @@ export default function Sidebar({
 
   const podeConfiguracoes = usuarioLogado?.cargo === "lider";
   
-  const podeConsultaNF =
-    usuarioLogado?.cargo === "lider" ||
-    usuarioLogado?.cargo === "admin";
+  const podeConsultaNF = usuarioLogado?.cargo === "lider";
 
   const iniciais =
     usuarioLogado?.nome?.charAt(0)?.toUpperCase() || "U";
@@ -43,6 +42,12 @@ export default function Sidebar({
       label: "Romaneio",
       desc: "Importação e bipagem",
       icon: Package,
+    },
+    {
+      id: "plp-checklist",
+      label: "PLP Checklist",
+      desc: "Acompanhe tarefas PLP",
+      icon: ClipboardCheck,
     },
     ...(podeVerDashboard
       ? [

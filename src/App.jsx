@@ -12,6 +12,7 @@ const Dashboard = lazy(() => import("./components/Dashboard"));
 const Configuracoes = lazy(() => import("./components/Configuracoes"));
 const RomaneioPage = lazy(() => import("./components/Romaneio/RomaneioPage"));
 const ConsultaNF = lazy(() => import("./components/ConsultaNF"));
+const PLPChecklist = lazy(() => import("./components/PLPChecklist"));
 
 function LoadingScreen() {
   return (
@@ -48,7 +49,7 @@ export default function App() {
   useEffect(() => {
     if (
       usuarioLogado &&
-      telaAtual === "configuracoes" &&
+      (telaAtual === "configuracoes" || telaAtual === "consulta-nf") &&
       usuarioLogado.cargo !== "lider"
     ) {
       setTelaAtual("romaneio");
@@ -120,8 +121,7 @@ export default function App() {
 
   const podeConfiguracoes = usuarioLogado.cargo === "lider";
   
-  const podeConsultaNF = 
-    usuarioLogado.cargo === "lider" || usuarioLogado.cargo === "admin";
+  const podeConsultaNF = usuarioLogado.cargo === "lider";
 
   return (
     <div className="app">
@@ -174,6 +174,10 @@ export default function App() {
 
               {telaAtual === "consulta-nf" && podeConsultaNF && (
                 <ConsultaNF />
+              )}
+
+              {telaAtual === "plp-checklist" && (
+                <PLPChecklist />
               )}
             </div>
           </Suspense>
