@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Trash2, CircleCheck as CheckCircle2, CircleAlert as AlertCircle, Clock } from "lucide-react";
 import "../styles/PLPChecklist.css";
